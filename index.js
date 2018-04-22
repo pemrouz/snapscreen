@@ -1,12 +1,12 @@
 const { existsSync, unlinkSync, mkdirSync, copyFileSync, createReadStream, createWriteStream } = require('fs')
     , { values, not } = require('utilise/pure')
-    , { resolve } = require('path')
+    , { resolve, dirname } = require('path')
     , { PNG } = require('pngjs')
     , log = require('utilise/log')('[snapshot]')
     , px = require('pixelmatch')
     , png = path => new Promise(resolve => createReadStream(path).pipe(new PNG()).on('parsed', function(){ resolve(this) }))
 
-module.exports = async (page, { width = 1920, height = 1200, dir = module.parent.filename } = {}) => {
+module.exports = async (page, { width = 1920, height = 1200, dir = dirname(module.parent.filename) } = {}) => {
   await page.setViewport({ width, height })
   
   return async function snapshot(name, { 
